@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Document</title>
+</head>
+<body>
+              <h1>Chating_Aplication</h1>
+              <input type="text" id="userMessage" placeholder="Enter your message">
+              <button id="sendBtn">Send</button>
+              <div id="userGivenMessages"></div>
+              <div id="disconnectUser"></div>
+              
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+             let socket = io();
+
+             const inputUserMessage=document.getElementById("userMessage");
+             const sendBtn=document.getElementById("sendBtn");
+             const userGivenMessages=document.getElementById("userGivenMessages");
+             const disconnectUser=document.getElementById("disconnectUser");
+
+             socket.on("message",(message)=>{
+              const para=document.createElement("p");
+              para.innerText=message;
+              userGivenMessages.appendChild(para);
+
+             });
+             socket.on("disconnectUserMessage",(message)=>{
+              const p=document.createElement("p");
+              p.innerText="User disconnected =="+message;
+              disconnectUser.appendChild(p);
+
+             })
+             sendBtn.addEventListener("click",(e)=>{
+              const message=inputUserMessage.value;
+              socket.emit("user_message",message);
+             });
+             
+             
+
+</script>
+</body>
+</html>
